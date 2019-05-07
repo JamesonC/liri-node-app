@@ -4,28 +4,41 @@ var keys = require("./keys.js");
 var axios = require("axios");
 var operand = process.argv[2];
 var nodeArgs = process.argv;
-var movieName = "";
+var input = "";
+
+for (var i = 3; i < nodeArgs.length; i++) {
+
+    if (i > 3 && i < nodeArgs.length) {
+        input = input + "+" + nodeArgs[i];
+    } else {
+        input += nodeArgs[i];
+
+    }
+}
 
 switch (operand) {
     case 'movie-this':
-        for (var i = 3; i < nodeArgs.length; i++) {
+        movieThis();
+        break;
 
-            if (i > 2 && i < nodeArgs.length) {
-                movieName = movieName + "+" + nodeArgs[i];
-            } else {
-                movieName += nodeArgs[i];
+    case 'concert-this':
+        bandsInTown();
+        break;
 
-            }
-        }
+    default:
+        console.log('Sorry!');
+}
 
-        // Then run a request with axios to the OMDB API with the movie specified
-        var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+function movieThis() {
+    // Then run a request with axios to the OMDB API with the movie specified
+    var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
 
-        // This line is just to help us debug against the actual URL.
-        console.log(queryUrl);
+    // This line is just to help us debug against the actual URL.
+    console.log(queryUrl);
 
-        axios.get(queryUrl).then(
+    axios.get(queryUrl).then(
             function (response) {
+                console.log("---------------------");
                 console.log("Title: " + response.data.Title);
                 console.log("Release Year: " + response.data.Year);
                 console.log("IMBD Rating: " + response.data.imdbRating);
@@ -34,9 +47,31 @@ switch (operand) {
                 console.log("Language: " + response.data.Language);
                 console.log("Plot: " + response.data.Plot);
                 console.log("Actors: " + response.data.Actors);
-            }
-        );
-        break;
-    default:
-        console.log('Sorry!');
+                console.log("---------------------");
+            })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
+
+function bandsInTown() {
+    // Then run a request with axios to the OMDB API with the movie specified
+    var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp";
+
+    // This line is just to help us debug against the actual URL.
+    console.log(queryUrl);
+
+    axios.get(queryUrl).then(
+            function (response) {
+                for (var j = 0; j < response.data.length; j++) {
+                    console.log("---------------------");
+                    console.log("Name of Venue: " + response.data[j].venue.name);
+                    console.log("Venue Location: " + response.data[j].venue.city + ", " + response.data[j].venue.region);
+                    console.log("Date of Event: " + response.data[j].datetime);
+                    console.log("---------------------");
+                }
+            })
+        .catch(function (error) {
+            console.log(error);
+        });
 }

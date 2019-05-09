@@ -27,6 +27,7 @@ for (var i = 3; i < nodeArgs.length; i++) {
     }
 }
 
+// switch statement that executes user input
 switch (operand) {
     case 'movie-this':
         movieThis();
@@ -36,18 +37,19 @@ switch (operand) {
         bandsInTown();
         break;
 
-    case "spotify-this-song":
+    case 'spotify-this-song':
         spotifyThis();
         break;
 
-    case "do-what-it-says":
+    case 'do-what-it-says':
         doWhatItSays();
         break;
 
     default:
-        console.log('Sorry!');
+        console.log('Sorry! Allowed commands are movie-this, concert-this, spotify-this-song, and/or do-what-it-says');
 }
 
+// reads file within random.txt and executes appropriate function
 function doWhatItSays() {
     fs.readFile('random.txt', 'utf8', (err, data) => {
         if (err) throw err;
@@ -58,12 +60,21 @@ function doWhatItSays() {
         operand = dataArr[0];
         input = dataArr[1];
 
-        if (operand == "spotify-this-song") {
-            spotifyThis();
-        } else if (operand == "concert-this") {
-            bandsInTown();
-        } else if (operand == "movie-this") {
-            movieThis();
+        switch (operand) {
+            case 'movie-this':
+                movieThis();
+                break;
+
+            case 'spotify-this-song':
+                spotifyThis();
+                break;
+
+            case 'concert-this':
+                bandsInTown();
+                break;
+
+            default:
+                console.log('Sorry!');
         }
 
     });

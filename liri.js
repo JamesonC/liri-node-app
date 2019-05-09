@@ -9,6 +9,8 @@ var spotify = new Spotify(keys.spotify);
 // axios import to make http requests
 var axios = require("axios");
 
+var fs = require("fs");
+
 // variables for command line arguments
 var operand = process.argv[2];
 var nodeArgs = process.argv;
@@ -36,8 +38,34 @@ switch (operand) {
         spotifyThis();
         break;
 
+    case "do-what-it-says":
+        doWhatItSays();
+        break;
+
     default:
         console.log('Sorry!');
+}
+
+function doWhatItSays() {
+    fs.readFile('random.txt', 'utf8', (err, data) => {
+        if (err) throw err;
+        console.log(data);
+
+        var dataArr = data.split(",");
+
+        operand = dataArr[0];
+        input = dataArr[1];
+
+        if (operand == "spotify-this-song") {
+            spotifyThis();
+        } else if (operand == "concert-this") {
+            bandsInTown();
+        } else if (operand == "movie-this") {
+            movieThis();
+        }
+
+    });
+
 }
 
 function spotifyThis() {

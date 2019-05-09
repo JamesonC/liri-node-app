@@ -81,6 +81,7 @@ function doWhatItSays() {
 
 }
 
+// function to search Spotify song
 function spotifyThis() {
     spotify
         .search({
@@ -102,6 +103,7 @@ function spotifyThis() {
         });
 }
 
+// function to search Movie
 function movieThis() {
     // Then run a request with axios to the OMDB API with the movie specified
     var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
@@ -127,6 +129,7 @@ function movieThis() {
         });
 }
 
+// function to search band events
 function bandsInTown() {
     // Then run a request with axios to the OMDB API with the movie specified
     var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp";

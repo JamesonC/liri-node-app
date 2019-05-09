@@ -9,7 +9,9 @@ var spotify = new Spotify(keys.spotify);
 // axios import to make http requests
 var axios = require("axios");
 
+// requiring packages
 var fs = require("fs");
+var moment = require('moment');
 
 // variables for command line arguments
 var operand = process.argv[2];
@@ -25,6 +27,7 @@ for (var i = 3; i < nodeArgs.length; i++) {
     }
 }
 
+// switch statement that executes user input
 switch (operand) {
     case 'movie-this':
         movieThis();
@@ -34,18 +37,19 @@ switch (operand) {
         bandsInTown();
         break;
 
-    case "spotify-this-song":
+    case 'spotify-this-song':
         spotifyThis();
         break;
 
-    case "do-what-it-says":
+    case 'do-what-it-says':
         doWhatItSays();
         break;
 
     default:
-        console.log('Sorry!');
+        console.log('Sorry! Allowed commands are movie-this, concert-this, spotify-this-song, and/or do-what-it-says');
 }
 
+// reads file within random.txt and executes appropriate function
 function doWhatItSays() {
     fs.readFile('random.txt', 'utf8', (err, data) => {
         if (err) throw err;
@@ -56,18 +60,28 @@ function doWhatItSays() {
         operand = dataArr[0];
         input = dataArr[1];
 
-        if (operand == "spotify-this-song") {
-            spotifyThis();
-        } else if (operand == "concert-this") {
-            bandsInTown();
-        } else if (operand == "movie-this") {
-            movieThis();
+        switch (operand) {
+            case 'movie-this':
+                movieThis();
+                break;
+
+            case 'spotify-this-song':
+                spotifyThis();
+                break;
+
+            case 'concert-this':
+                bandsInTown();
+                break;
+
+            default:
+                console.log('Sorry!');
         }
 
     });
 
 }
 
+// function to search Spotify song
 function spotifyThis() {
     spotify
         .search({
@@ -89,6 +103,7 @@ function spotifyThis() {
         });
 }
 
+// function to search Movie
 function movieThis() {
     // Then run a request with axios to the OMDB API with the movie specified
     var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
@@ -114,6 +129,7 @@ function movieThis() {
         });
 }
 
+// function to search band events
 function bandsInTown() {
     // Then run a request with axios to the OMDB API with the movie specified
     var queryUrl = "https://rest.bandsintown.com/artists/" + input + "/events?app_id=codingbootcamp";
@@ -124,10 +140,12 @@ function bandsInTown() {
     axios.get(queryUrl).then(
             function (response) {
                 for (var j = 0; j < response.data.length; j++) {
+                    let eventDate = response.data[j].datetime;
+
                     console.log("---------------------");
                     console.log("Name of Venue: " + response.data[j].venue.name);
                     console.log("Venue Location: " + response.data[j].venue.city + ", " + response.data[j].venue.region);
-                    console.log("Date of Event: " + response.data[j].datetime);
+                    console.log("Event Date: ", moment(eventDate).format('LLLL'));
                     console.log("---------------------");
                 }
             })

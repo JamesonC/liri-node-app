@@ -9,7 +9,9 @@ var spotify = new Spotify(keys.spotify);
 // axios import to make http requests
 var axios = require("axios");
 
+// requiring packages
 var fs = require("fs");
+var moment = require('moment');
 
 // variables for command line arguments
 var operand = process.argv[2];
@@ -124,10 +126,12 @@ function bandsInTown() {
     axios.get(queryUrl).then(
             function (response) {
                 for (var j = 0; j < response.data.length; j++) {
+                    let eventDate = response.data[j].datetime;
+
                     console.log("---------------------");
                     console.log("Name of Venue: " + response.data[j].venue.name);
                     console.log("Venue Location: " + response.data[j].venue.city + ", " + response.data[j].venue.region);
-                    console.log("Date of Event: " + response.data[j].datetime);
+                    console.log("Event Date: ", moment(eventDate).format('LLLL'));
                     console.log("---------------------");
                 }
             })

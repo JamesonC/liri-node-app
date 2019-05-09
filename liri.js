@@ -1,18 +1,25 @@
+// credentials for Spotify API
 require("dotenv").config();
+
+// call for Spotify API
 var keys = require("./keys.js");
-// var spotify = new Spotify(keys.spotify);
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify(keys.spotify);
+
+// axios import to make http requests
 var axios = require("axios");
+
+// variables for command line arguments
 var operand = process.argv[2];
 var nodeArgs = process.argv;
 var input = "";
 
+// for loop that takes in multiple node CLIs
 for (var i = 3; i < nodeArgs.length; i++) {
-
     if (i > 3 && i < nodeArgs.length) {
         input = input + "+" + nodeArgs[i];
     } else {
         input += nodeArgs[i];
-
     }
 }
 
@@ -25,8 +32,33 @@ switch (operand) {
         bandsInTown();
         break;
 
+    case "spotify-this-song":
+        spotifyThis();
+        break;
+
     default:
         console.log('Sorry!');
+}
+
+function spotifyThis() {
+    spotify
+        .search({
+            type: 'track',
+            query: input
+        })
+        .then(function (response) {
+            for (var k = 0; k < response.tracks.items.length; k++) {
+                console.log("---------------------");
+                console.log("Artist: ", response.tracks.items[k].artists[0].name);
+                console.log("Song Name: ", response.tracks.items[k].name);
+                console.log("Preview Link: ", response.tracks.items[k].external_urls.spotify);
+                console.log("Album Name: ", response.tracks.items[k].album.name);
+                console.log("---------------------");
+            }
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
 }
 
 function movieThis() {

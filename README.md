@@ -33,3 +33,18 @@ What can LIRI search and what will it show in result?
 - Song's name
 - A preview link of the song from Spotify
 - The album that the song is from
+
+How does LIRI works?
+
+Open your terminal and navigate to LIRI's root application file.
+Within terminal enter $ node liri.js and press Enter to get a list of action command.
+
+/Users/Jameson_C/Desktop/1.png
+
+Then pick action commmand and input your search inquiry after that, for example: 
+
+/Users/Jameson_C/Desktop/2.png
+
+There is a 4th command in this app as well. This command will read the random.txt file and grab an input from there using fs npm and runs spotify API or whichever command you enter.
+
+/Users/Jameson_C/Desktop/3.png

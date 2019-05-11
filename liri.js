@@ -83,6 +83,9 @@ function doWhatItSays() {
 
 // function to search Spotify song
 function spotifyThis() {
+
+    if (input === "") input = "the sign ace of base"
+    
     spotify
         .search({
             type: 'track',
@@ -105,6 +108,9 @@ function spotifyThis() {
 
 // function to search Movie
 function movieThis() {
+
+    if (input === "") input = "Mr.Nobody"
+
     // Then run a request with axios to the OMDB API with the movie specified
     var queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
 
